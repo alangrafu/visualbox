@@ -31,7 +31,33 @@
           <h3>What is Visualbox?</h3>
 
 <p>Visualbox is a "special edition" of LODSPeaKr focused in allowing people to create visualizations using Linked Open Data.</p>
+<h3 id='simplest_installation'>Simplest Installation</h3>
 
+<p>Simply go to your web server root directory (e.g., /var/www/visualizations) and run</p>
+
+<p>bash &lt; &lt;(curl -sL http://visualbox.org/install)</p>
+
+<p>You will be required to answer 3 questions:</p>
+
+<ul>
+<li>What is the location of visualbox? If you are running the script in <code>/var/www/visualizations</code> it is highly likely it will be <code>http://localhost/visualizations</code> or <code>http://yourdomainname/visualizations</code></li>
+
+<li>What is the domain of the data you want to query? For now, you can leave it as the default (i.e., press Enter)</li>
+
+<li>What is the URL of your SPARQL endpoint? Where should Visualbox look to execute SPARQL queries.</li>
+</ul>
+
+<p>Finally, give write permissions to the web server in <code>visualbox/meta</code>, <code>visualbox/cache</code>, <code>visualbox/settings.inc.php</code> and <code>visualbox/components</code>. This can be done in several ways:</p>
+
+<ul>
+<li><code>sudo chown WEBSERVERUSER visualbox/meta visualbox/cache visualbox/settings.inc.php visualbox/components</code> * <strong>Note</strong> You can find the name of your web server user by running <code>ps aux|egrep &quot;apache|httpd|www&quot; |egrep -v &quot;grep|root&quot;|awk &#39;{print $1}&#39;|uniq</code></li>
+
+<li>Alternatively you can run <code>chdmod -R 777 visualbox/meta visualbox/cache visualbox/settings.inc.php visualbox/components</code> but this is highly discouraged</li>
+</ul>
+
+<p>Now you can go to <code>http://localhost/visualizations</code> and you should see the welcome page. You can check now <a href='https://github.com/alangrafu/visualbox/wiki/How-to-create-a-new-visualization'>How to create a new visualization</a></p>
+
+<p>More documentation on installation of LODSPeaKr/Visualbox is available at the <a href='https://github.com/alangrafu/lodspeakr/wiki'>LODSPeaKr wiki</a></p>
         </section>
 
         <aside id="sidebar">
