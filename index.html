@@ -44,13 +44,14 @@
 
 <li>What is the domain of the data you want to query? For now, you can leave it as the default (i.e., press Enter)</li>
 
-<li>What is the URL of your SPARQL endpoint? Where should Visualbox look to execute SPARQL queries.</li>
+<li>What is the URL of your SPARQL endpoint? Where should Visualbox look to execute SPARQL queries (e.g., <code>http://dbpedia.org/sparql</code>.</li>
 </ul>
 
 <p>Finally, give write permissions to the web server in <code>visualbox/meta</code>, <code>visualbox/cache</code>, <code>visualbox/settings.inc.php</code> and <code>visualbox/components</code>. This can be done in several ways:</p>
 
 <ul>
-<li><code>sudo chown WEBSERVERUSER visualbox/meta visualbox/cache visualbox/settings.inc.php visualbox/components</code> * <strong>Note</strong> You can find the name of your web server user by running <code>ps aux|egrep &quot;apache|httpd|www&quot; |egrep -v &quot;grep|root&quot;|awk &#39;{print $1}&#39;|uniq</code></li>
+<li><code>sudo chown WEBSERVERUSER visualbox/meta visualbox/cache visualbox/settings.inc.php visualbox/components</code>
+ <ul><li> <strong>Note</strong> You can find the name of your web server user by running <code>ps aux|egrep &quot;apache|httpd|www&quot; |egrep -v &quot;grep|root&quot;|awk &#39;{print $1}&#39;|uniq</code></li></ul></li>
 
 <li>Alternatively you can run <code>chdmod -R 777 visualbox/meta visualbox/cache visualbox/settings.inc.php visualbox/components</code> but this is highly discouraged</li>
 </ul>
