@@ -29,8 +29,8 @@ while [ "$everything_ok" != "y" ]; do
   echo
   echo "LODSPeaKr needs to know three (3) URIs to minimally configure itself:"
   echo 
-  echo    "(1/2) At what URL will `pwd |sed -e 's/lodspeakr$//'` be available? (e.g. http://localhost/$parent/)"
-  echo    "**Note** DO NOT include 'lodspeakr/' in the URL"
+  echo    "(1/2) At what URL will `pwd |sed -e 's/visualbox$//'` be available? (e.g. http://localhost/$parent/)"
+  echo    "**Note** DO NOT include 'visualbox/' in the URL"
   echo -n "(default '$basedir'): "
   read -u 1 aux_basedir
   echo 
@@ -38,14 +38,14 @@ while [ "$everything_ok" != "y" ]; do
   basedir=$aux_basedir
 
   ns=$basedir
-  echo    "(2/3) What local namespace you will use?"
-  echo -n "(default '$ns'): "
-  read -u 1 aux_ns
-  echo ""
-  if [ "$aux_ns" != "" ]; then
-    aux_ns="`echo $aux_ns | sed 's/\/$//'`/" # remove any ending slash and append one.
-    ns=$aux_ns
-  fi
+#  echo    "(2/3) What local namespace you will use?"
+#  echo -n "(default '$ns'): "
+#  read -u 1 aux_ns
+#  echo ""
+#  if [ "$aux_ns" != "" ]; then
+#    aux_ns="`echo $aux_ns | sed 's/\/$//'`/" # remove any ending slash and append one.
+#    ns=$aux_ns
+#  fi
 
   external=""
   extra=""
@@ -69,8 +69,8 @@ while [ "$everything_ok" != "y" ]; do
   echo "Ok, so I have the following configuration:"
   echo
   echo "Base URL is                        $basedir"
-  echo "lodspeakr is installed at          $basedir$home"
-  echo "The local namespace is             $ns"
+  echo "visualbox is installed at          $basedir$home"
+#  echo "The local namespace is             $ns"
   echo "Your SPARQL endpoint is located at $endpoint"
 
   echo
