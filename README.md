@@ -3,7 +3,7 @@ Visualbox
 
 author: Alvaro Graves (alvaro@graves.cl)
 
-version: 20121107
+version: 20121218
 
 
 Visualbox is a simplified edition of [LODSPeaKr](http://lodspeakr.org) focused on allowing people to create visualizations using Linked Data.
