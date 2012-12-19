@@ -7,7 +7,7 @@ class AdminModule extends abstractModule{
 <html lang='en'>
   <head>
     <meta charset='utf-8'>
-    <title>Visualbox Admin Menu</title>
+    <title>LODSPeaKr Admin Menu</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta name='description' content=''>
     <meta name='author' content=''>
@@ -140,7 +140,7 @@ class AdminModule extends abstractModule{
             <span class='icon-bar'></span>
             <span class='icon-bar'></span>
           </a>
-          <a class='brand' href='../admin'>Visualbox menu</a>
+          <a class='brand' href='../admin'>LODSPeaKr menu</a>
           <div class='nav-collapse'>
             <ul class='nav'>
               <!--li class='dropdown'>
@@ -570,22 +570,13 @@ class AdminModule extends abstractModule{
       }else{
         if(preg_match("/^\w/", $line) ){
             $lastComponentType = trim($line);
-            if($lastComponentType == 'services'){
-              $onlyService = true;
-            }else{
-              $onlyService = false;
-            }
             $singleLastComponentType = preg_replace('/(.*)s$/', '\1', $lastComponentType);
-            if($onlyService){
-              $menu .= "<ul class='nav nav-list'>
-              <li class='nav-header'>Components  <button class='btn btn-mini btn-info new-button' style='float:right' data-type='$singleLastComponentType'>new</button></li>\n";
-            }
+            $menu .= "<ul class='nav nav-list'>
+              <li class='nav-header'>".$lastComponentType."  <button class='btn btn-mini btn-info new-button' style='float:right' data-type='$singleLastComponentType'>new</button></li>\n";
         }else{
           $componentName = trim($line);
-          if($onlyService){
             $menu .= "<li class='component-li'> <button type='button' class='close hide lodspk-delete-component' data-component-type='$singleLastComponentType' data-component-name='$componentName' style='align:left'>x</button>
           <a href='#$componentName' class='lodspk-component' data-component-type='$lastComponentType' data-component-name='$componentName'>".$componentName."</a></li>\n";
-          }
         }
       }
     }
