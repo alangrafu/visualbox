@@ -12,7 +12,6 @@ class Haanga_Extension_Filter_D3CirclePacking{
   	$names = explode(",", $varname);
   	$varList = array();
   	$randId = uniqid("_ID_");
-
   	foreach($names as $v){
   	  if(strpos($v,"=")){
   	    break;
@@ -36,7 +35,7 @@ class Haanga_Extension_Filter_D3CirclePacking{
   	//options
   	$options = array();
   	$options['width'] = 960;
-  	$options['height'] = 500;
+  	$options['height'] = 600;
   	$options['color'] = '#aec7e8';
   	$options['highlightedColor'] = '#00477f';
   	$options['radius'] = 10;
@@ -51,25 +50,26 @@ class Haanga_Extension_Filter_D3CirclePacking{
 
   	$maps = array();
   	$quantities = array();
+  	$links = array();
   	$rootNode = NULL;
   	$id = $varList[0]['name'];
   	$quantity  = $varList[2]['name'];
+  	$link  = $varList[3]['name'];
   	$parentId = $varList[1]['name'];
-  	foreach($obj as $k){
-  	  if(!isset($k->$parentId)){
-  	    //root
-  	    $rootNode = $k->$id->value;
-  	  }else{
+
+    foreach($obj as $k){
   	    if(!isset($maps[$k->$parentId->value])){
   	      $maps[$k->$parentId->value] = array();
   	    }
   	    if(isset($k->$quantity)){
   	      $quantities[$k->$id->value] = $k->$quantity->value;
   	    }
+  	    if(isset($k->$link)){
+  	      $links[$k->$id->value] = $k->$link->value;
+  	    }
   	    array_push($maps[$k->$parentId->value], $k->$id->value);
-  	  }
   	}  
-  	function travelCirclePacking($node, $tree, $quantities){
+  	function travelCirclePacking($node, $tree, $quantities, $links){
   	  $total = array();
   	  foreach($tree[$node] as $v){
   	    $branch = array();
@@ -77,8 +77,11 @@ class Haanga_Extension_Filter_D3CirclePacking{
   	      if(isset($quantities[$v])){
   	        $branch['size'] = $quantities[$v];
   	      }
+  	      if(isset($links[$v])){
+  	        $branch['link'] = $links[$v];
+  	      }
   	    }else{
-  	      $branch['children'] = travelCirclePacking($v, $tree, $quantities);
+  	      $branch['children'] = travelCirclePacking($v, $tree, $quantities, $links);
   	    }
   	    $branch['name'] = $v;
   	    array_push($total, $branch);
@@ -87,15 +90,15 @@ class Haanga_Extension_Filter_D3CirclePacking{
   	}
   	
   	$json['name'] = $rootNode;
-  	$json['children'] = travelCirclePacking($rootNode, $maps, $quantities);
+  	$json['children'] = travelCirclePacking($rootNode, $maps, $quantities, $links);
   	
   	
   	$pre = '<div id="clusterpacking'.$randId.'"><div id="name'.$randId.'" style="font-family:sans-serif;font-size:15px;height:25px"><h2> </h2></div></div><script src="http://d3js.org/d3.v2.min.js?2.9.3"></script>
 <script>
 // Based on http://bost.ocks.org/mike/treemap/ 
 function initD3CirclePacking'.$randId.'(json){
-var width = 960,
-    height = 600,
+var width = '.$options['width'].',
+    height = '.$options['height'].',
     format = d3.format(",d");
 
 var pack = d3.layout.pack()
@@ -123,10 +126,16 @@ var vis = d3.select("#clusterpacking'.$randId.'").append("svg")
       .style("stroke", "rgb(31, 119, 180)").style("stroke-width", "1px")
       .attr("r", function(d) { return d.r; });
 
-  node.filter(function(d) { return !d.children; }).append("text")
+  node.filter(function(d) { return !d.children && !d.link; }).append("text")
       .attr("text-anchor", "middle")
       .attr("dy", ".3em")
       .text(function(d) { return d.name.substring(0, d.r / 3); });
+      
+  node.filter(function(d) { return !d.children && d.link; }).append("a").attr("xlink:href", function(d){return d.link}).append("text")
+      .attr("text-anchor", "middle")
+      .attr("dy", ".3em")
+      .text(function(d) { return d.name.substring(0, d.r / 3); });
+
 
 }
     
