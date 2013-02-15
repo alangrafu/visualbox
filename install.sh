@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 #
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 root_htaccess="root.htaccess"
 parent_htaccess="../.htaccess"
 settings_file="settings.inc.php"
 
 metadb="db.sqlite"
-basedir="http://localhost/my/data"
+baseUrl="http://localhost/my/data"
 home=`basename \`pwd\`` # 'lodspeakr', the directory from git clone
-ns=$basedir
+ns=$baseUrl
 endpoint="http://localhost/sparql"
 everything_ok="n"
 
@@ -15,13 +17,63 @@ if [ -e "$parent_htaccess" ]; then
   echo
   echo "`dirname \`pwd\``/.htaccess already exists."
   echo "Please remove it to continue the installation."
-  exit
+  exit 1
 fi
 
 back_one=`cd .. 2>/dev/null && pwd`
 parent=`basename $back_one`
 
 utils/create_db.sh $metadb
+
+
+
+_baseurl=
+_basens=
+_sparqlendpoint=
+_chown=
+_chmod=
+
+options=$@
+
+# An array with all the arguments
+arguments=($options)
+
+# Loop index
+index=0
+
+for argument in $options
+  do
+    # Incrementing index
+    index=`expr $index + 1`
+
+    # The conditions
+    case $argument in
+      base-url=*) val=${argument#*=};
+                  opt=${argument%=$val};
+                  _baseurl="${val}" ;;
+      base-namespace=*) val=${argument#*=};
+                  opt=${argument%=$val};
+                  _basens="${val}" ;;
+      sparql-endpoint=*) val=${argument#*=};
+                  opt=${argument%=$val};
+                  _sparqlendpoint="${val}" ;;
+      chown=*) val=${argument#*=};
+                  opt=${argument%=$val};
+                  _chown="${val}" ;;
+      chmod=*) val=${argument#*=};
+                  opt=${argument%=$val};
+                  _chmod="${val}" ;;
+    esac
+  done
+
+
+if [ ! -z "$_baseurl"  ] && [ ! -z "$_basens"  ] && [ ! -z "$_sparqlendpoint"  ]; then
+  baseUrl="`echo $_baseurl | sed 's/\/$//'`/"
+  ns=$_basens
+  endpoint=$_sparqlendpoint
+  everything_ok="y"
+fi
+
 
 while [ "$everything_ok" != "y" ]; do
   echo
@@ -55,7 +107,13 @@ while [ "$everything_ok" != "y" ]; do
     external="\$conf['ns']['local']"
     extra="\$conf['ns']['base']   = '$basedir';"
   fi
+  baseUrl="`echo $baseUrl | sed 's/\/$//'`/" # remove any ending slash and append one.
   
+#Suggest baseUrl+"/sparql" for default endpoint
+  if [ "$baseUrl" != "" ]; then
+    endpoint=$baseUrl"sparql"
+  fi
+
   echo    "(2/2) What is the URL of your SPARQL endpoint?"
   echo -n "(default $endpoint): "
   read -u 1 aux_endpoint
@@ -68,15 +126,26 @@ while [ "$everything_ok" != "y" ]; do
   echo
   echo "Ok, so I have the following configuration:"
   echo
-  echo "Base URL is                        $basedir"
-  echo "visualbox is installed at          $basedir$home"
+  echo "Base URL is                        $baseUrl"
+  echo "visualbox is installed at          $baseUrl$home"
 #  echo "The local namespace is             $ns"
   echo "Your SPARQL endpoint is located at $endpoint"
+  echo
+  echo "visualbox is installed at          $DIR"
 
   echo
   echo -n "Complete installation? (y/n)? "
   read -u 1 everything_ok
 done
+
+external=""
+extra=""
+if [[ "$baseUrl" =~ ^"$ns" ]]; then
+  external="false"
+else
+  external="\$conf['ns']['local']"
+  extra="\$conf['ns']['base']   = '$baseUrl';"
+fi
 
 if [ -e "$settings_file" ]; then
   ts=`date +%s`
@@ -91,7 +160,7 @@ content="<?php
 
 \$conf['endpoint']['local'] = '$endpoint';
 \$conf['home'] = '$LODSPEAKR_HOME';
-\$conf['basedir'] = '$basedir';
+\$conf['basedir'] = '$baseUrl';
 \$conf['debug'] = false;
 
 \$conf['ns']['local']   = '$ns';
@@ -114,7 +183,7 @@ echo ""
 echo "<IfModule mod_rewrite.c>" > $parent_htaccess
 echo "RewriteEngine on" >> $parent_htaccess
 echo >> $parent_htaccess
-newBase=`echo $basedir|sed -e "s|https\{0,1\}://[^\/]*||g"`
+newBase=`echo $baseUrl|sed -e "s|https\{0,1\}://[^\/]*||g"`
 echo "RewriteBase $newBase" >> $parent_htaccess
 cat $root_htaccess >> $parent_htaccess
 echo "RewriteRule ^(.+)\$ $home/index.php?q=\$1 [L]" >> $parent_htaccess
@@ -125,30 +194,44 @@ mkdir -p components/uris
 bold=`tput bold`
 normal=`tput sgr0`
 wwwUser=`ps aux|egrep "apache|httpd|www" |egrep -v "grep|root"|awk '{print $1}'|uniq|tail -1`  
-echo
-echo "                                      *** ATTENTION ***"
-echo
-echo "LODSPeaKr needs the web server to have write permissions for $home/cache/ $home/meta/ $home/components and $home/settings.inc.php."
-echo
-echo
-echo "Common ways of doing this:"
-if [ "$wwwUser" != "" ]; then
-  echo " ${bold}chmod -R g+w $home/cache $home/meta $home/settings.inc.php${normal}; sudo chgrp -R $wwwUser $home/cache $home/meta $home/settings.inc.php${normal} "
-  echo "OR"
-  echo " ${bold}chmod -R 777 $home/cache $home/meta $home/settings.inc.php${normal} (highly discouraged but useful to test when everything fails. It shouldn't be used in production sites)"
+
+if [ ! -z "$_chmod" ]; then
+  echo
+  echo "WARNING: Automatically changing permissions of cache, meta, components and settings.inc.php to $_chmod"
+  echo
+  chmod -R $_chmod  $DIR/cache $DIR/meta $DIR/components $DIR/settings.inc.php 
+elif [ ! -z "$_chown" ]; then
+  echo
+  echo "WARNING: Automatically changing ownership of cache, meta, components and settings.inc.php to $_chown"
+  echo
+  chown -R $_chown $DIR/cache $DIR/meta $DIR/components $DIR/settings.inc.php
 else
-  echo " ${bold}chown -R www-data $home/cache $home/meta${normal} $home/components $home/settings.inc.php (find the name of the apache user in your system)"
-  echo " ${bold}chown -R www-apache $home/cache $home/meta${normal} $home/components $home/settings.inc.php (find the name of the apache user in your system)"
-  echo " ${bold}chown -R apache $home/cache $home/meta${normal} $home/components $home/settings.inc.php (find the name of the apache user in your system)"
-  echo " ${bold}chmod -R g+w $home/cache $home/meta${normal} $home/components $home/settings.inc.php (if you have a group in common with the apache user)"
-  echo " ${bold}chmod -R 777 $home/cache $home/meta${normal} $home/components $home/settings.inc.php (highly discouraged but useful to test when everything fails. It shouldn't be used in production sites)"
+  echo
+  echo "                                      *** ATTENTION ***"
+  echo
+  echo "LODSPeaKr needs the web server to have write permissions for $home/cache/ $home/meta/ $home/components and $home/settings.inc.php."
+  echo
+  echo
+  echo "Common ways of doing this:"
+  if [ "$wwwUser" != "" ]; then
+    echo " ${bold}chmod -R g+w $home/cache $home/meta $home/settings.inc.php${normal}; sudo chgrp -R $wwwUser $home/cache $home/meta $home/settings.inc.php${normal} "
+    echo "OR"
+    echo " ${bold}chmod -R 777 $home/cache $home/meta $home/settings.inc.php${normal} (highly discouraged but useful to test when everything fails. It shouldn't be used in production sites)"
+  else
+    echo " ${bold}chown -R www-data $home/cache $home/meta${normal} $home/components $home/settings.inc.php (find the name of the apache user in your system)"
+    echo " ${bold}chown -R www-apache $home/cache $home/meta${normal} $home/components $home/settings.inc.php (find the name of the apache user in your system)"
+    echo " ${bold}chown -R apache $home/cache $home/meta${normal} $home/components $home/settings.inc.php (find the name of the apache user in your system)"
+    echo " ${bold}chmod -R g+w $home/cache $home/meta${normal} $home/components $home/settings.inc.php (if you have a group in common with the apache user)"
+    echo " ${bold}chmod -R 777 $home/cache $home/meta${normal} $home/components $home/settings.inc.php (highly discouraged but useful to test when everything fails. It shouldn't be used in production sites)"
+  fi
+  echo
+  echo "Please give the server write permissions. Otherwise, Visualbox will NOT WORK."
+  echo
+  echo "See https://github.com/alangrafu/lodspeakr/wiki/Installation for further information"
 fi
-echo
-echo "Please give the server write permissions. Otherwise, LODSPeaKr will NOT WORK."
-echo
-echo "See https://github.com/alangrafu/lodspeakr/wiki/Installation for further information"
-echo
-echo "--------------------------------------------------------------------------------------------------------"
-echo "You can now visit ${bold}$basedir${normal} to navigate through your data."
-echo "--------------------------------------------------------------------------------------------------------"
-echo
+  echo
+  echo "--------------------------------------------------------------------------------------------------------"
+  echo "You can now visit ${bold}$baseUrl${normal} to navigate through your data."
+  echo "--------------------------------------------------------------------------------------------------------"
+  echo
+
