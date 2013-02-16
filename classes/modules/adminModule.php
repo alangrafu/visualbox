@@ -570,13 +570,22 @@ class AdminModule extends abstractModule{
       }else{
         if(preg_match("/^\w/", $line) ){
             $lastComponentType = trim($line);
+            if($lastComponentType == 'services'){
+              $onlyService = true;
+            }else{
+              $onlyService = false;
+            }
             $singleLastComponentType = preg_replace('/(.*)s$/', '\1', $lastComponentType);
-            $menu .= "<ul class='nav nav-list'>
-              <li class='nav-header'>".$lastComponentType."  <button class='btn btn-mini btn-info new-button' style='float:right' data-type='$singleLastComponentType'>new</button></li>\n";
+            if($onlyService){
+              $menu .= "<ul class='nav nav-list'>
+              <li class='nav-header'>Visualizations  <button class='btn btn-mini btn-info new-button' style='float:right' data-type='$singleLastComponentType'>new</button></li>\n";
+            }
         }else{
           $componentName = trim($line);
+          if($onlyService){
             $menu .= "<li class='component-li'> <button type='button' class='close hide lodspk-delete-component' data-component-type='$singleLastComponentType' data-component-name='$componentName' style='align:left'>x</button>
-          <a href='#$componentName' class='lodspk-component' data-component-type='$lastComponentType' data-component-name='$componentName'>".$componentName."</a></li>\n";
+            <a href='#$componentName' class='lodspk-component' data-component-type='$lastComponentType' data-component-name='$componentName'>".$componentName."</a></li>\n";
+          }
         }
       }
     }
