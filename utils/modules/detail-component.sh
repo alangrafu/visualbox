@@ -21,8 +21,10 @@ then
 fi
 
 cd $componentDir
-views=`ls *.template`
-
+views=`ls *.subtemplate`
+if [ "$views" = "" ]; then
+  views=`ls *.template`
+fi
 #In certain cases queries may not exist but that's fine
 
 if [  -d "$componentDir" ]

@@ -6,7 +6,7 @@ $(document).ready(function(){
     CodeMirror.defineMode('mustache', function(config, parserConfig) {
   var mustacheOverlay = {
     token: function(stream, state) {
-      var ch;                                 
+      var ch;
       if (stream.match('{{')) {
         while ((ch = stream.next()) != null)
           if (ch == '}' && stream.next() == '}') break;
@@ -68,7 +68,7 @@ $(document).ready(function(){
                     .on('mouseleave', function(){tip.animate({opacity: '0'}, 20)});
     //Create Template and Query Editor
     var templateEditor = CodeMirror.fromTextArea(document.getElementById('template-editor'), {mode: 'mustache',
-    lineNumbers: true,
+
     onChange:function(e){
      if(templateEditor.getValue() == templateBuffer){
        $('#template-save-button').addClass('disabled');
@@ -78,7 +78,7 @@ $(document).ready(function(){
      }
      });
      var queryEditor = CodeMirror.fromTextArea(document.getElementById('query-editor'), {mode: 'sparql',
-     lineNumbers: true,
+
      onChange:function(e){
      if(queryEditor.getValue() == queryBuffer){
        $('#query-save-button').addClass('disabled');
@@ -226,7 +226,7 @@ $(document).ready(function(){
       $.each(data.views, function(i, item){
           var viewUrl = relPos+componentType+"/"+componentName+"/"+item;
           var viewFileUrl = componentType+"/"+componentName+"/"+item;
-          var displayName = item.replace(".template","");
+          var displayName = item.replace(".template","").replace(".subtemplate", "");
           $("#template-list").append("<li class='file-li'><button type='button' class='close hide lodspk-delete-file' data-parent='"+dataParent+"' data-file='"+viewFileUrl+"' style='align:left'>x</button><a class='lodspk-template' href='#template-editor' data-url='"+viewUrl+"'>"+displayName+"</a></li>") ;
       });
       $.each(data.models, function(i, item){
