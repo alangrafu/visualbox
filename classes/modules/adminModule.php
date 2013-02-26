@@ -123,8 +123,16 @@ class AdminModule extends abstractModule{
 	  border: 1px solid #ddd;
 	  color: #9da0a4;
 	  -webkit-border-radius: 4px 0 4px 0;
-	  -moz-border-radius: 4px 0 4px 0;
+	  -moz-border-radius: 4px 0 4px 0;                            
 	  border-radius: 4px 0 4px 0;
+	  }
+	  .cheat-example{
+	  background:#ccc;
+	  font-family:monaco;
+	  font-size:11px;
+	  }
+	  .embed-code{
+	  font-family:Monaco;
 	  }
     </style>
     <link href='../css/bootstrap-responsive.min.css' rel='stylesheet' type='text/css' media='screen' />

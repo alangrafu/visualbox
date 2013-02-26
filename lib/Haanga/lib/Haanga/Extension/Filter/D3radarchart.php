@@ -58,7 +58,7 @@ class Haanga_Extension_Filter_D3RadarChart{
   	$json = $rows;
   	
   	
-  	$pre = '<div id="'.$randId.'"><div id="name'.$randId.'" style="font-family:sans-serif;font-size:15px;height:25px"><h2> </h2></div></div>
+  	$pre = '<div id="'.$randId.'"></div>
 <script src="http://d3js.org/d3.v2.min.js?2.9.3"></script>
 <script src="https://raw.github.com/alangrafu/radar-chart-d3/master/src/radar-chart-min.js"></script>  	
 <script>
