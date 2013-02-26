@@ -48,6 +48,7 @@ $(document).ready(function(){
                                   {name: 'D3ForceGraph',  params: "sourceNode,TargetNode", img: "graph.png"},
                                   {name: 'D3ParallelCoordinates',  params: "label,value1,value2,...,valueN", img: "parallelcoordinates.png"},
                                   {name: 'D3WordCloud', params: "textVariable", img: "wordcloud.png"},
+                                  {name: 'D3RadarChart', params: "value1,value2,value3,...,valueN", img: "radar.png"},
                                   {name: 'GoogleMaps',  params: "latitude,longitude,label", img: "maps.png"},
                                   {name: 'GoogleVizBarChart', params: "valuesInAxisX,valuesInAxisY", img: "barchart.png"},
                                   {name: 'GoogleVizColumnChart', params: "valuesInAxisX,valuesInAxisY", img: "columnchart.png"},
@@ -64,7 +65,7 @@ $(document).ready(function(){
       var visualFilter = '{{models.main|'+$(this).html()+':"'+$(this).attr("data-params")+'"}}';
       templateEditor.replaceSelection(visualFilter);
     })
-                    .on('mouseenter', function(){var visualFilter = '<h3>'+$(this).html()+'</h3><p style="background:#ccc">{{models.main|'+$(this).html()+':"'+$(this).attr("data-params")+'"}}</p><img src="img/'+$(this).attr("data-img")+'"/>';tip.html(visualFilter).animate({opacity: .95}, 20)})
+                    .on('mouseenter', function(){var visualFilter = '<h3>'+$(this).html()+'</h3><p style="background:#ccc">{{models.main|'+$(this).html()+':"'+$(this).attr("data-params")+'"}}</p><img style="max-width:200px;max-height:150px" src="img/'+$(this).attr("data-img")+'"/>';tip.html(visualFilter).animate({opacity: .95}, 20)})
                     .on('mouseleave', function(){tip.animate({opacity: '0'}, 20)});
     //Create Template and Query Editor
     var templateEditor = CodeMirror.fromTextArea(document.getElementById('template-editor'), {mode: 'mustache',

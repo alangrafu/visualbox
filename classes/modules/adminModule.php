@@ -7,7 +7,7 @@ class AdminModule extends abstractModule{
 <html lang='en'>
   <head>
     <meta charset='utf-8'>
-    <title>LODSPeaKr Admin Menu</title>
+    <title>Visualbox Admin Menu</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta name='description' content=''>
     <meta name='author' content=''>
@@ -140,7 +140,7 @@ class AdminModule extends abstractModule{
             <span class='icon-bar'></span>
             <span class='icon-bar'></span>
           </a>
-          <a class='brand' href='../admin'>LODSPeaKr menu</a>
+          <a class='brand' href='../admin'>Visualbox menu</a>
           <div class='nav-collapse'>
             <ul class='nav'>
               <!--li class='dropdown'>
@@ -621,8 +621,8 @@ class AdminModule extends abstractModule{
        </div>
        <div class='row-fluid'>
         <div class='span3'>
-         <p><a href='#' id='preview-button' class='hide'><button class='btn btn-success btn-large'>View component</button></a></p>
-         <p><button id='embed-button' class='btn btn-success btn-large hide'>Embed component</button></p>
+         <p><a href='#' id='preview-button' class='hide'><button class='btn btn-success btn-large'>View visualization</button></a></p>
+         <p><button id='embed-button' class='btn btn-success btn-large hide'>Share visualization</button></p>
         </div>
        </div>
       </div>
