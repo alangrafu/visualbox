@@ -83,13 +83,13 @@ while [ "$everything_ok" != "y" ]; do
   echo 
   echo    "(1/2) At what URL will `pwd |sed -e 's/visualbox$//'` be available? (e.g. http://localhost/$parent/)"
   echo    "**Note** DO NOT include 'visualbox/' in the URL"
-  echo -n "(default '$basedir'): "
-  read -u 1 aux_basedir
+  echo -n "(default '$baseUrl'): "
+  read -u 1 aux_baseUrl
   echo 
-  aux_basedir="`echo $aux_basedir | sed 's/\/$//'`/" # remove any ending slash and append one.
-  basedir=$aux_basedir
+  aux_baseUrl="`echo $aux_baseUrl | sed 's/\/$//'`/" # remove any ending slash and append one.
+  baseUrl=$aux_baseUrl
 
-  ns=$basedir
+  ns=$baseUrl
 #  echo    "(2/3) What local namespace you will use?"
 #  echo -n "(default '$ns'): "
 #  read -u 1 aux_ns
@@ -101,11 +101,11 @@ while [ "$everything_ok" != "y" ]; do
 
   external=""
   extra=""
-  if [[ "$basedir" =~ ^"$ns" ]]; then
+  if [[ "$baseUrl" =~ ^"$ns" ]]; then
     external="false"
   else
     external="\$conf['ns']['local']"
-    extra="\$conf['ns']['base']   = '$basedir';"
+    extra="\$conf['ns']['base']   = '$baseUrl';"
   fi
   baseUrl="`echo $baseUrl | sed 's/\/$//'`/" # remove any ending slash and append one.
   
