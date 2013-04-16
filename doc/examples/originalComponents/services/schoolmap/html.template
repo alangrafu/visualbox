@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
  <head>
   <meta charset="utf-8">
-  </head>
-  <body>
-   {{models.education_uk.main|GoogleMaps:"lat,long,name"}}
-  </body>
+  <title></title>
+ </head>
+ <body>
+ {%include "html.subtemplate"%}
+ </body>
 </html>

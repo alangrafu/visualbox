@@ -1,0 +1,2 @@
+   <h2>Total of Nobel laureates in Physics by country</h2>
+  {{models.main|GoogleVizPieChart:"countryLabel,total,width=900,height=500"}}
