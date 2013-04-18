@@ -34,7 +34,7 @@ class Haanga_Extension_Filter_GoogleVizScatterChart{
   	    $name = $v['name'];
   	    $val = $v['value'];
   	    $value = $k->$name->$val;
-  	  	$data .="        data.setCell($i, $j, ".$value.");\n";
+  	  	$data .="        data.setCell($i, $j, ".floatval($value).");\n";
   	  	$j++;
   	  } 
   	  $i++;
