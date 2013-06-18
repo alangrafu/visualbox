@@ -473,8 +473,8 @@ class AdminModule extends abstractModule{
       $ns = (isset($_POST['namespace']))?$_POST['namespace']:'http://'.$_SERVER['SERVER_NAME'].'/';
       $prefix = (isset($_POST['prefix']))?$_POST['prefix']:'local';
       $return_var = 0;
-      exec ("php utils/modules/remove-namespace.php ".$prefix, &$output, $return_var);
-      exec ("php utils/modules/add-namespace.php ".$prefix." ".$ns, &$output, $return_var);  
+      exec ("php utils/modules/remove-namespace.php ".$prefix, $output, $return_var);
+      exec ("php utils/modules/add-namespace.php ".$prefix." ".$ns, $output, $return_var);  
       if($return_var == 0){
         echo $this->head ."<div class='alert alert-success'>Your main namespace was updated successfully to $ns</div><div class='alert'>You can now return to the <a href='menu'>home menu</a>.</div>".$this->foot;
       }else{
@@ -537,8 +537,8 @@ class AdminModule extends abstractModule{
       $ns = (isset($_POST['endpoint']))?$_POST['endpoint']:'http://'.$_SERVER['SERVER_NAME'].'/';
       $prefix = (isset($_POST['prefix']))?$_POST['prefix']:'local';
       $return_var = 0;
-      exec ("php utils/modules/remove-endpoint.php ".$prefix, &$output, $return_var);
-      exec ("php utils/modules/add-endpoint.php ".$prefix." ".$ns, &$output, $return_var);  
+      exec ("php utils/modules/remove-endpoint.php ".$prefix, $output, $return_var);
+      exec ("php utils/modules/add-endpoint.php ".$prefix." ".$ns, $output, $return_var);  
       if($return_var == 0){
         echo $this->head ."<div class='alert alert-success'>Your endpoint was updated successfully to $ns</div><div class='alert'>You can now return to the <a href='menu'>home menu</a>.</div>".$this->foot;
       }else{
@@ -549,7 +549,7 @@ class AdminModule extends abstractModule{
   
   protected function startEndpoint(){
     $return_var = 0;
-    exec ("utils/modules/start-endpoint.sh", &$output, $return_var);  
+    exec ("utils/modules/start-endpoint.sh", $output, $return_var);  
     if($return_var == 0){
       echo $this->head ."<div class='alert alert-success'>Endpoint starter successfully</div><div class='alert'>You can now return to the <a href='menu'>home menu</a>.</div>".$this->foot;
     }else{
@@ -560,7 +560,7 @@ class AdminModule extends abstractModule{
   protected function componentEditor(){
     global $lodspk;
     global $conf;
-    exec ("utils/lodspk.sh list components", &$output, $return_var);
+    exec ("utils/lodspk.sh list components", $output, $return_var);
     $menu = "";
     $endpointOptions = "";
     foreach($conf['endpoint'] as $k => $v){
@@ -748,7 +748,7 @@ class AdminModule extends abstractModule{
   	  exit(0);
     }    
     $return_var = 0;
-    exec ("utils/modules/detail-component.sh $componentType $componentName", &$output, $return_var);  
+    exec ("utils/modules/detail-component.sh $componentType $componentName", $output, $return_var);  
     if($return_var == 0){
       $comps = array();
       $lastKey = "";
@@ -797,7 +797,7 @@ class AdminModule extends abstractModule{
         exit(0);
       }
       $return_var = 0;
-      exec ("utils/lodspk.sh create ".$params[1]." ".$params[2], &$output, $return_var);  
+      exec ("utils/lodspk.sh create ".$params[1]." ".$params[2], $output, $return_var);  
       //echo $return_var;exit(0);
       if($return_var !== 0){
         HTTPStatus::send500($params[0]." ".$params[1]);
@@ -818,7 +818,7 @@ class AdminModule extends abstractModule{
         exit(0);
       }
       $return_var = 0;
-      exec ("utils/lodspk.sh delete ".$params[1]." ".$params[2], &$output, $return_var);  
+      exec ("utils/lodspk.sh delete ".$params[1]." ".$params[2], $output, $return_var);  
       if($return_var !== 0){
         HTTPStatus::send500($params[0]." ".$params[1]);
       }else{
@@ -839,7 +839,7 @@ class AdminModule extends abstractModule{
       }
       $return_var = 0;
       if(strpos($path, "components") === 0 && strpos($path, '..') === FALSE){
-        exec ("rm ".$path, &$output, $return_var);  
+        exec ("rm ".$path, $output, $return_var);  
         if($return_var !== 0){
           echo json_encode(array('success' => false, path => $path));          
         }else{
@@ -910,7 +910,7 @@ class AdminModule extends abstractModule{
   
   protected function stopEndpoint(){
     $return_var = 0;
-    exec ("utils/modules/stop-endpoint.sh", &$output, $return_var);  
+    exec ("utils/modules/stop-endpoint.sh", $output, $return_var);  
     if($return_var == 0){
       echo $this->head ."<div class='alert alert-success'>Endpoint stopped successfully</div><div class='alert'>You can now return to the <a href='menu'>home menu</a>.</div>".$this->foot;
     }else{
