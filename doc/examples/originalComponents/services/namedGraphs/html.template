@@ -1,9 +1,9 @@
 {%include "../../includes/header.inc"%}
   <div class="container-fluid">
       <h1>Named graphs available</h1>
-  {%if first.main.g%}
+  {%if first.dbpedia.main.g%}
       <ul>
-    {% for row in models.main %}
+    {% for row in models.dbpedia.main %}
         <li>{{row.g.value}}</li>
     {% endfor %}
       </ul>

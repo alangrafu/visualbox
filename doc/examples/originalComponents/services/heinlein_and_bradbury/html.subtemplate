@@ -1,2 +1,2 @@
    <h2>People influenced by Robert Heinlein and Ray Bradbury</h2>
-  {{models.main|D3ForceGraph:"child,parent"}}
+  {{models.dbpedia.main|D3ForceGraph:"child,parent"}}

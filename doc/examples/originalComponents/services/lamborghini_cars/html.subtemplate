@@ -1,3 +1,3 @@
    <h2>Measures of different models of Lamborghini cars</h2>
-{{models.main|D3RadarChart:"wheelbase,carWidth,carLength"}}
-   {{models.main|D3ParallelCoordinates:"carLabel,wheelbase,carWidth,carLength,transmission,height=300"}}
+{{models.dbpedia.main|D3RadarChart:"wheelbase,carWidth,carLength"}}
+   {{models.dbpedia.main|D3ParallelCoordinates:"carLabel,wheelbase,carWidth,carLength,transmission,height=300"}}

@@ -1,2 +1,2 @@
    <h2>A set of triples in a Google table</h2>
-   {{models.main|GoogleVizTable:"s.curie,p.curie,o.curie"}}
+   {{models.dbpedia.main|GoogleVizTable:"s.curie,p.curie,o.curie"}}
