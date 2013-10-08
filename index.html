@@ -56,7 +56,7 @@ If you want to try Visualbox but don't want to install it and configure it in yo
 <li><code>sudo chown WEBSERVERUSER visualbox/meta visualbox/cache visualbox/settings.inc.php visualbox/components</code>
  <ul><li> <strong>Note</strong> You can find the name of your web server user by running <code>ps aux|egrep &quot;apache|httpd|www&quot; |egrep -v &quot;grep|root&quot;|awk &#39;{print $1}&#39;|uniq</code></li></ul></li>
 
-<li>Alternatively you can run <code>chdmod -R 777 visualbox/meta visualbox/cache visualbox/settings.inc.php visualbox/components</code> but this is highly discouraged</li>
+<li>Alternatively you can run <code>chmod -R 777 visualbox/meta visualbox/cache visualbox/settings.inc.php visualbox/components</code> but this is highly discouraged</li>
 </ul>
 
 <p>Now you can go to <code>http://localhost/visualizations</code> and you should see the welcome page. You can check now <a href='https://github.com/alangrafu/visualbox/wiki/How-to-create-a-new-visualization'>How to create a new visualization</a></p>
